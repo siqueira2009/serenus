@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="shortcut icon" href="../imgs/Logo.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            background: #f9f9fb;
+            color: #111;
+            overflow-x: hidden;
+        }
+
+        main {
+            margin-left: 100px;
+            padding: 40px 50px;
+            width: calc(100% - 100px);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100px;
+            height: 100vh;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 30px;
+            border-right: 1px solid #eee;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        .menu-item {
+            width: 100%;
+            padding: 15px 0;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #111;
+            transition: 0.25s ease;
+        }
+
+        .menu-item:hover {
+            background: #f3f3f3;
+        }
+
+        .menu-item i {
+            font-size: 28px;
+            opacity: .35;
+            transition: 0.3s;
+        }
+
+        .menu-item.active i {
+            opacity: 1;
+        }
+
+        .menu-item span {
+            font-size: 12px;
+            opacity: .8;
+            font-weight: 400;
+        }
+
+        /* PROFILE SECTION */
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .profile-image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .profile-image-container i {
+            position: absolute;
+            font-size: 70px;
+        }
+
+        .profile-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #000000;
+            opacity: 40%;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-name {
+            font-size: 36px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .profile-header i {
+            font-size: 24px;
+        }
+
+        .profile-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+
+        .entry-date {
+            color: #000000;
+            font-weight: 500;
+        }
+
+        .profile-stats {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #8A38F5;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* CONFIG SECTIONS */
+        .config-section {
+            margin-top: 50px;
+        }
+
+        .config-label {
+            font-size: 24px;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .config-select {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            color: #000000;
+            background: #ffffff;
+            border: 1px solid #000000;
+            border-radius: 8px;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23000000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            padding-right: 50px;
+        }
+
+        .config-select:focus {
+            outline: none;
+            border-color: #8A38F5;
+        }
+
+        .config-select option {
+            padding: 10px;
+        }
+
+        /* ACTION BUTTONS */
+        .action-buttons {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 25px;
+            background: #ffffff;
+            border: 1px solid #000000;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #000000;
+        }
+
+        .action-button:hover {
+            background: #f5f5f5;
+            transform: translateX(5px);
+        }
+
+        .action-button-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .action-button-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+        }
+
+        .action-button-icon i {
+            font-size: 20px;
+        }
+
+        .action-button-text {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .action-button-arrow i {
+            font-size: 20px;
+            opacity: 0.4;
+        }
+
+        .action-button.danger {
+            border-color: #dc3545;
+        }
+
+        .action-button.danger .action-button-icon {
+            background: #ffe5e5;
+        }
+
+        .action-button.danger .action-button-icon i,
+        .action-button.danger .action-button-text {
+            color: #dc3545;
+        }
+
+        .action-button.warning {
+            border-color: #ffc107;
+        }
+
+        .action-button.warning .action-button-icon {
+            background: #fff9e5;
+        }
+
+        .action-button.warning .action-button-icon i,
+        .action-button.warning .action-button-text {
+            color: #ffc107;
+        }
+
+        /* DIVIDER */
+        .divider {
+            margin-top: 50px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #000000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="sidebar" id="sidebar">
+        <a href="../menu/index.html" class="menu-item" data-page="menu">
+            <i class="fa-solid fa-house"></i>
+            <span>Menu</span>
+        </a>
+        <a href="../cultivo/index.html" class="menu-item" data-page="cultivo">
+            <i class="fa-solid fa-tree"></i>
+            <span>Cultivo</span>
+        </a>
+        <a href="../chat/index.html" class="menu-item" data-page="chats">
+            <i class="fa-solid fa-comment"></i>
+            <span>Chats</span>
+        </a>
+        <a href="../perfil/index.html" class="menu-item" data-page="perfil">
+            <i class="fa-solid fa-user"></i>
+            <span>Perfil</span>
+        </a>
+        <a href="index.html" class="menu-item active" data-page="config">
+            <i class="fa-solid fa-gear"></i>
+            <span>Confi...</span>
+        </a>
+    </nav>
+
+    <main>
+        <div class="profile-container">
+            <div class="profile-image-container">
+                <img src="../imgs/André Matos GOAT.webp" alt="André Coelho Matos" class="profile-image">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+            
+            <div class="profile-info">
+                <div class="profile-header">
+                    <h1 class="profile-name">André Coelho Matos</h1>
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </div>
+                
+                <div class="profile-meta">
+                    <span class="entry-date">andrematos@angra.com</span>
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </div>
+                
+                <div class="profile-stats">
+                    <span>Alterar senha</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <label class="config-label">Idioma do aplicativo</label>
+            <select class="config-select">
+                <option value="pt-br">🇧🇷 Português (brasileiro)</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="fr">🇫🇷 Français</option>
+            </select>
+        </div>
+
+        <div class="config-section">
+            <label class="config-label">Nacionalidade</label>
+            <select class="config-select">
+                <option value="" disabled selected>Escolha uma opção</option>
+                <option value="af">🇦🇫 Afeganistão</option>
+                <option value="za">🇿🇦 África do Sul</option>
+                <option value="al">🇦🇱 Albânia</option>
+                <option value="de">🇩🇪 Alemanha</option>
+                <option value="br">🇧🇷 Brasil</option>
+            </select>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 class="section-title">Preferências</h2>
+
+        <div class="action-buttons">
+            <a href="#" class="action-button">
+                <div class="action-button-content">
+                    <div class="action-button-icon">
+                        <i class="fa-solid fa-bell"></i>
+                    </div>
+                    <span class="action-button-text">Notificações</span>
+                </div>
+                <div class="action-button-arrow">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+
+            <a href="#" class="action-button">
+                <div class="action-button-content">
+                    <div class="action-button-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <span class="action-button-text">Privacidade e segurança</span>
+                </div>
+                <div class="action-button-arrow">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+
+            <a href="#" class="action-button">
+                <div class="action-button-content">
+                    <div class="action-button-icon">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <span class="action-button-text">Acessibilidade</span>
+                </div>
+                <div class="action-button-arrow">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 class="section-title">Ajuda</h2>
+
+        <div class="action-buttons">
+            <a href="#" class="action-button">
+                <div class="action-button-content">
+                    <div class="action-button-icon">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <span class="action-button-text">Suporte</span>
+                </div>
+                <div class="action-button-arrow">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+
+            <a href="#" class="action-button">
+                <div class="action-button-content">
+                    <div class="action-button-icon">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+                    <span class="action-button-text">Sobre o aplicativo</span>
+                </div>
+                <div class="action-button-arrow">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+
+            <a href="#" class="action-button">
+                <div class="action-button-content">
+                    <div class="action-button-icon">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <span class="action-button-text">Termos de uso e política</span>
+                </div>
+                <div class="action-button-arrow">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 class="section-title">Conta</h2>
+
+        <div class="action-buttons">
+            <a href="../home/homepage.html" class="action-button warning">
+                <div class="action-button-content">
+                    <div class="action-button-icon">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </div>
+                    <span class="action-button-text ir-home">Sair da conta</span>
+                </div>
+                <div class="action-button-arrow">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+
+            <a href="../home/homepage.html" class="action-button danger">
+                <div class="action-button-content">
+                    <div class="action-button-icon">
+                        <i class="fa-solid fa-trash"></i>
+                    </div>
+                    <span class="action-button-text ir-home">Excluir conta</span>
+                </div>
+                <div class="action-button-arrow">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </a>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefa Diária</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            padding-bottom: 15px;
+        }
+        
+
+        .avatar-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 40px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            font-size: 50px;
+            font-weight: 600;
+            color: #fff;
+            background: #000;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .avatar::before {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            width: 170px;
+            height: 75px;
+            background: #000;
+            border-radius: 50% 50% 0 0;
+        }
+
+        .avatar-icon {
+            font-size: 55px;
+            color: #fff;
+            z-index: 1;
+        }
+
+        .speech-bubble {
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 20px;
+            padding: 20px 25px;
+            position: relative;
+            max-width: 400px;
+        }
+
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-right: 20px solid #000;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            left: -16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 13px solid transparent;
+            border-bottom: 13px solid transparent;
+            border-right: 18px solid #fff;
+        }
+
+        .speech-bubble p {
+            font-size: 16px;
+            font-weight: 500;
+            color: #000;
+            line-height: 1.4;
+        }
+
+        .options-section {
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #fff;
+            border: 2px solid #000;
+            border-bottom: 5px solid #000;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            position: relative;
+        }
+
+        .option-btn:hover {
+            background: #f8f8f8;
+        }
+
+        .option-btn:active {
+            border-bottom-width: 2px;
+            transform: translateY(3px);
+        }
+
+        .option-btn.selected {
+            background: #fff;
+            border: 2px solid #000;
+            border-bottom: 2px solid #000;
+            transform: translateY(3px);
+        }
+
+        .option-btn.selected .option-number,
+        .option-btn.selected .option-text {
+            color: #8A38F5;
+        }
+
+        .option-number {
+            font-size: 26px;
+            font-weight: 700;
+            color: #8A38F5;
+            min-width: 35px;
+        }
+
+        .option-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: #000;
+            text-align: left;
+            flex: 1;
+        }
+
+        .activity-section {
+            margin-top: 30px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 30px;
+        }
+
+        .textarea-container {
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+        }
+
+        .textarea-wrapper {
+            height: 100%;
+            background: #fff;
+            border: 2px solid #000;
+            border-bottom: 5px solid #000;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .textarea-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            padding: 20px;
+        }
+
+        .line {
+            height: 40px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        textarea {
+            width: 100%;
+            height: 320px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            resize: none;
+            background: transparent;
+            position: relative;
+            z-index: 1;
+            line-height: 40px;
+            color: #000;
+        }
+
+        textarea::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        .continue-btn {
+            width: 100%;
+            margin: 0 auto;
+            max-width: 500px;
+            margin-top: 20px;
+            background: #fff;
+            border: 2px solid #000;
+            border-bottom: 5px solid #000;
+            border-radius: 12px;
+            padding: 16px 30px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .continue-btn:hover {
+            background: #f8f8f8;
+        }
+
+        .continue-btn:active {
+            border-bottom-width: 2px;
+            transform: translateY(3px);
+        }
+
+        .continue-btn i {
+            font-size: 24px;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 30px;
+        }
+
+        header a {
+            color: black;
+            text-decoration: none;
+        }
+
+        header i {
+            font-size: 22px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="../menu/index.html"><i class="fa-solid fa-x"></i></a>
+    </header>
+
+    <div class="avatar-section">
+        <div class="avatar">
+            <span>?</span>
+        </div>
+        <div class="speech-bubble">
+            <p>Qual foi nível de dificuldade de resistência ao seu vício, hoje?</p>
+        </div>
+    </div>
+
+    <div class="activity-section">
+        <div class="options-section">
+            <button class="option-btn">
+                <span class="option-number">1</span>
+                <span class="option-text">Não tive muitas dificuldades</span>
+            </button>
+            <button class="option-btn">
+                <span class="option-number">2</span>
+                <span class="option-text">Tive algumas dificuldades</span>
+            </button>
+            <button class="option-btn">
+                <span class="option-number">3</span>
+                <span class="option-text">Tive bastante dificuldade</span>
+            </button>
+            <button class="option-btn">
+                <span class="option-number">4</span>
+                <span class="option-text">Quase me rendi</span>
+            </button>
+            <button class="option-btn">
+                <span class="option-number">5</span>
+                <span class="option-text">Me rendi</span>
+            </button>
+        </div>
+
+        <div class="textarea-container">
+            <div class="textarea-wrapper">
+                <div class="textarea-lines">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+                <textarea placeholder="Observações..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <button class="continue-btn">
+        Continuar
+        <i class="fa-solid fa-angle-right"></i>
+    </button>
+
+    <script>
+        const buttons = document.querySelectorAll('.option-btn');
+        
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                buttons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+            });
+        });
+
+        const continueButton = document.querySelector('.continue-btn');
+
+        continueButton.addEventListener('click', () => {
+            window.location.href = "tarefaConcluida.html"
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seu cultivo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="shortcut icon" href="../imgs/Logo.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100px;
+            height: 100vh;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 30px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 15px 0;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #000000;
+        }
+        .menu-item:hover {
+            background-color: #f8f8f8;
+        }
+        .menu-item i {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #000000;
+            transition: all 0.2s;
+        }
+
+        .menu-item:not(.active) i {
+            opacity: 0.4;
+        }
+
+        .menu-item.active i {
+            opacity: 1;
+        }
+
+        .menu-item span {
+            font-size: 12px;
+            font-weight: 400;
+            color: #000000;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 100px;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #4E9FE5 0%, #4E9FE5 75%, #7F3737 70%, #7F3737 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .tree-container {
+            display: flex;
+            position: absolute;
+            bottom: 25%;
+            left: 20%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: auto;
+        }
+        .tree-container svg {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+        }
+
+        .streak-container {
+            position: absolute;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 25%;
+        }
+        
+        .streak-container h1 {
+            background-color: white;
+            padding: 10px 30px;
+            border-radius: 100px;
+            font-size: 60px;
+            color: #8A38F5;
+        }
+
+        .header-container {
+            position: absolute;
+            top: 0;
+            gap: 15px;
+            flex-direction: column;
+            width: 100%;
+            padding: 30px;
+            padding-right: 200px;
+            display: flex;
+            align-items: flex-end; /* mantém o header no final */
+        }
+
+        /* faz o título usar a mesma largura do grupo das semanas */
+        .header-container h1 {
+            font-size: 50px;
+            text-align: center;
+            width: var(--largura-semana);
+            margin: 0;
+            color: white;
+        }
+
+        /* captura a largura real das semanas */
+        .semanas {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            --largura-semana: fit-content;
+            width: fit-content;
+        }
+        .semanas {
+            --largura-semana: 100%;
+        }
+
+
+        .week-calendar {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .day-circle {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .day-letter {
+            font-size: 24px;
+            font-weight: 700;
+            color: #8A38F5;
+        }
+
+        .quote-box {
+            width: 450px;
+            background: white;
+            border-radius: 15px;
+            padding: 15px 30px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        .quote-text {
+            font-size: 16px;
+            font-weight: 400;
+            color: #000;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .quote-author {
+            font-size: 14px;
+            font-weight: 400;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Lateral -->
+    <nav class="sidebar">
+        <a href="../menu/index.html" class="menu-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Menu</span>
+        </a>
+        <a href="index.html" class="menu-item active">
+            <i class="fa-solid fa-tree"></i>
+            <span>Cultivo</span>
+        </a>
+        <a href="../chat/index.html" class="menu-item">
+            <i class="fa-solid fa-comment"></i>
+            <span>Chats</span>
+        </a>
+        <a href="../perfil/index.html" class="menu-item">
+            <i class="fa-solid fa-user"></i>
+            <span>Perfil</span>
+        </a>
+        <a href="../configuracoes/index.html" class="menu-item">
+            <i class="fa-solid fa-gear"></i>
+            <span>Confi...</span>
+        </a>
+    </nav>
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <!-- Árvore SVG -->
+        <div class="tree-container">
+                    <svg width="617" height="571" viewBox="0 0 617 571" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M305.488 64.4254C305.891 65.3423 306.191 66.3007 306.383 67.2833C305.948 65.7835 305.605 64.7673 305.488 64.4254Z" fill="#3F3D56"/>
+            <path d="M319.259 111.886C319.059 113.57 318.671 115.225 318.102 116.823L319.259 111.886Z" fill="#3F3D56"/>
+            <path d="M460.981 273.59C430.454 289.503 390.52 303.243 378.559 307.226C387.679 304.851 414.225 301.652 455.353 327.316C507.031 359.555 562.287 338.06 562.287 338.06C562.287 338.06 550.01 361.604 523.913 363.133C497.815 364.661 429.77 321.687 406.754 333.969C383.739 346.25 372.983 330.899 363.77 361.604C354.557 392.309 337.675 476.218 357.12 523.299L376.556 570.372H266.045C266.045 570.372 305.956 463.938 283.951 398.445C271.635 361.766 254.619 313.02 260.416 315.547C260.416 315.547 233.809 289.449 225.117 289.449C216.424 289.449 175.48 285.358 162.184 271.541C162.184 271.541 143.254 258.236 109.479 290.986C75.7042 323.736 83.8968 323.737 53.7108 321.175C23.9989 318.651 0.721789 304.239 0 303.786C0.86149 304.136 35.5602 318.008 56.7768 310.944C78.2685 303.779 96.6879 276.656 115.621 267.449C134.553 258.243 145.806 245.954 171.389 259.26L154.531 219.507L149.912 208.616L149.905 208.6C149.905 208.6 144.27 133.893 133.528 128.777C122.786 123.661 129.437 110.36 109.482 107.795C109.482 107.795 134.036 104.725 138.643 121.612C143.25 138.499 174.976 229.583 174.976 229.583C174.976 229.583 194.411 268.466 215.903 259.26C237.394 250.053 207.714 198.369 207.714 198.369L170.881 181.478C170.881 181.478 198.513 180.453 215.395 196.32C232.276 212.186 233.301 263.351 233.301 263.351C233.301 263.351 275.766 269.49 286.006 292.523C286.006 292.523 320.794 271.541 319.266 302.242C319.266 302.242 349.963 273.078 347.914 263.351C345.865 253.623 343.311 230.6 323.868 216.79C304.426 202.98 291.633 180.965 305.453 149.239C313.222 131.392 316.622 121.806 318.113 116.83L310.045 151.286C310.045 151.286 304.93 186.594 319.26 198.874C319.299 198.905 319.33 198.936 319.366 198.967C333.671 211.263 352.509 233.674 352.509 233.674L352.455 232.689L365.298 267.45C365.298 267.45 441.025 264.888 457.903 231.624C474.781 198.361 488.609 196.832 488.609 196.832L478.887 225.485L468.145 250.041C468.145 250.041 512.146 251.066 535.167 277.165C558.188 303.263 615.495 310.941 615.495 310.941L583.269 319.635C583.269 319.635 552.563 309.404 523.403 290.471C494.242 271.538 497.305 254.656 460.981 273.59Z" fill="#3F3D56"/>
+            <path opacity="0.1" d="M477.293 203.773C474.056 218.102 470.245 231.944 464.89 242.493C448.008 275.756 372.285 278.318 372.285 278.318C372.285 278.318 372.642 273.924 373.186 266.992C392.412 265.404 444.966 258.647 458.681 231.625C459.938 229.157 461.102 226.502 462.205 223.707L477.293 203.773Z" fill="black"/>
+            <path opacity="0.1" d="M370.454 179.932C370.342 192.531 381.263 168.184 370.454 179.932V179.932Z" fill="black"/>
+            <path opacity="0.1" d="M326.241 301.853V313.11C326.241 313.11 356.94 283.943 354.894 274.221C353.328 266.785 351.455 251.57 341.968 238.645C346.244 248.415 347.546 257.944 348.684 263.354C350.152 270.326 334.782 287.295 325.968 296.34C326.277 298.16 326.369 300.011 326.241 301.853Z" fill="black"/>
+            <path opacity="0.1" d="M285.058 224.597C285.302 225.116 285.552 225.626 285.818 226.119C293.663 240.692 305.493 256.18 314.342 270.411C307.193 256.32 294.745 240.207 285.058 224.597Z" fill="black"/>
+            <path opacity="0.1" d="M456.128 327.315C439.301 316.815 424.907 311.149 413.16 308.278C400.832 312.919 390.686 316.379 385.582 318.078C394.737 315.707 421.264 312.559 462.339 338.182C494.566 358.287 528.184 357.494 548.926 354.05C554.662 349.72 559.47 344.281 563.062 338.056C563.062 338.056 507.809 359.552 456.128 327.315Z" fill="black"/>
+            <path opacity="0.1" d="M310.006 202.813C305.879 192.702 305.2 180.672 309.941 166.574C309.882 161.465 310.176 156.358 310.823 151.29L318.879 116.823C317.398 121.798 313.995 131.382 306.218 149.244C296.373 171.855 300.047 189.524 310.006 202.813Z" fill="black"/>
+            <path opacity="0.1" d="M535.944 277.169C519.977 259.069 493.928 253.036 479.453 251.031L475.128 260.916C475.128 260.916 519.129 261.94 542.153 288.036C554.921 302.508 578.228 311.313 596.461 316.288L616.272 310.942C616.272 310.942 558.969 303.266 535.944 277.169Z" fill="black"/>
+            <path opacity="0.1" d="M222.887 270.127C244.372 260.918 214.701 209.234 214.701 209.234L213.889 208.862C221.287 224.473 232.016 252.682 216.678 259.259C202.325 265.411 188.886 250.105 181.541 239.261L181.954 240.449C181.954 240.449 201.403 279.337 222.887 270.127Z" fill="black"/>
+            <path opacity="0.1" d="M318.879 116.822C319.446 115.225 319.833 113.57 320.033 111.888L318.879 116.822Z" fill="black"/>
+            <path opacity="0.1" d="M156.892 219.468C156.892 219.468 156.054 219.484 154.533 219.507L149.914 208.616C150.419 208.609 150.683 208.6 150.683 208.6C150.683 208.6 147.128 161.481 140.282 139.521C140.368 139.56 140.438 139.606 140.515 139.644C151.256 144.761 156.892 219.468 156.892 219.468Z" fill="black"/>
+            <path opacity="0.1" d="M276.767 570.375C286.142 541.634 308.687 462.155 290.937 409.31C283.272 386.489 276.166 371.937 270.16 362.653C275.884 374.211 280.753 386.173 284.728 398.443C306.73 463.936 266.819 570.375 266.819 570.375H276.767Z" fill="black"/>
+            <path opacity="0.1" d="M128.894 123.808C129.478 124.791 130.185 125.695 130.998 126.498C130.401 125.525 129.695 124.622 128.894 123.808Z" fill="black"/>
+            <path opacity="0.1" d="M222.377 207.182C223.169 207.93 223.911 208.729 224.599 209.574C222.357 204.186 219.59 199.526 216.171 196.315C199.288 180.452 171.659 181.475 171.659 181.475L206.308 197.357C212.244 199.573 217.699 202.908 222.377 207.182Z" fill="black"/>
+            <path opacity="0.1" d="M307.149 67.244C306.944 66.2324 306.631 65.2453 306.217 64.2993C306.217 64.2993 306.612 65.4043 307.149 67.244Z" fill="black"/>
+            <path opacity="0.1" d="M126.433 118.777C130.942 119.329 136.129 120.713 140.085 123.922C139.827 123.049 139.602 122.267 139.423 121.609C134.818 104.724 110.259 107.793 110.259 107.793C121.357 109.218 124.224 113.965 126.433 118.777Z" fill="black"/>
+            <path d="M379.175 544.084C371.544 555.788 373.636 570.673 373.636 570.673C373.636 570.673 388.098 566.583 395.729 554.88C403.359 543.176 401.268 528.292 401.268 528.292C401.268 528.292 386.806 532.381 379.175 544.084Z" fill="#3F3D56"/>
+            <path d="M384.908 546.152C384.305 560.11 373.944 571 373.944 571C373.944 571 364.562 559.257 365.16 545.299C365.758 531.341 376.124 520.452 376.124 520.452C376.124 520.452 385.511 532.194 384.908 546.152Z" fill="#8A38F5"/>
+            <path d="M253.599 548.511C257.247 561.998 269.742 570.351 269.742 570.351C269.742 570.351 276.322 556.837 272.674 543.35C269.026 529.863 256.531 521.511 256.531 521.511C256.531 521.511 249.951 535.025 253.599 548.511Z" fill="#3F3D56"/>
+            <path d="M258.959 545.612C268.969 555.358 270.192 570.339 270.192 570.339C270.192 570.339 255.185 569.52 245.175 559.773C235.165 550.027 233.942 535.047 233.942 535.047C233.942 535.047 248.949 535.867 258.959 545.612Z" fill="#8A38F5"/>
+            <path d="M225.781 179.944C224.911 193.888 214.343 204.577 214.343 204.577C214.343 204.577 205.188 192.657 206.061 178.715C206.934 164.773 217.491 154.079 217.491 154.079C217.491 154.079 226.652 165.999 225.781 179.944Z" fill="#8A38F5"/>
+            <path d="M89.2396 261.79C101.057 269.241 105.367 283.641 105.367 283.641C105.367 283.641 90.517 285.96 78.6964 278.508C66.8758 271.056 62.5684 256.657 62.5684 256.657C62.5684 256.657 77.4222 254.341 89.2396 261.79Z" fill="#8A38F5"/>
+            <path d="M329.481 116.643C325.918 130.152 313.475 138.583 313.475 138.583C313.475 138.583 306.807 125.11 310.374 111.601C313.94 98.092 326.38 89.6613 326.38 89.6613C326.38 89.6613 333.046 103.134 329.481 116.643Z" fill="#8A38F5"/>
+            <path d="M563.404 275.519C555.817 287.25 541.369 291.396 541.369 291.396C541.369 291.396 539.224 276.519 546.811 264.787C554.399 253.055 568.846 248.91 568.846 248.91C568.846 248.91 570.991 263.788 563.404 275.519Z" fill="#8A38F5"/>
+            <path d="M501.772 73.2054L519.747 95.8691C522.035 98.7529 526.938 95.6312 525.843 92.3204C523.602 85.5512 531.336 81.7798 536.675 80.6645C543.757 79.1857 550.865 79.4252 557.585 76.3807C561.854 74.4464 558.151 68.1595 553.901 70.0821C546.04 73.6425 536.872 72.0113 528.911 75.4746C521.795 78.5711 516.17 86.2915 518.806 94.258L524.902 90.7093L506.927 68.0457C506.24 67.3678 505.313 66.9878 504.348 66.9878C503.383 66.9878 502.456 67.3678 501.769 68.0457C501.105 68.74 500.734 69.6639 500.734 70.6247C500.734 71.5856 501.105 72.5094 501.769 73.2037L501.772 73.2054Z" fill="#3F3D56"/>
+            <path d="M122.597 3.65583C121.822 7.03851 122.366 10.5894 124.118 13.5851C125.144 15.1077 126.646 16.2464 128.39 16.8223C130.133 17.3982 132.018 17.3788 133.749 16.767C140.548 14.6553 147.257 12.1834 153.999 9.8924C154.92 9.61622 155.698 8.9957 156.173 8.16C156.647 7.32431 156.781 6.33784 156.547 5.40591C156.281 4.47888 155.663 3.6929 154.824 3.21666C153.986 2.74043 152.994 2.61192 152.062 2.85871L135.214 8.5845C133.943 9.01657 132.677 9.50726 131.383 9.8623C131.247 9.89914 130.753 10.008 130.78 10.0063C130.842 10.0063 131.225 10.0415 130.8 10.0063C130.556 9.93263 130.556 9.94881 130.8 10.0549L130.478 9.87231C130.773 10.1168 130.443 9.83883 130.341 9.73667C130.239 9.63452 129.989 9.28453 130.192 9.58095C130.046 9.369 129.918 9.14484 129.81 8.91103C129.988 9.30458 129.654 8.32991 129.631 8.19593C129.494 6.67532 129.581 5.14291 129.889 3.6475C129.884 2.68149 129.499 1.75624 128.816 1.07316C128.133 0.390075 127.207 0.00440507 126.241 0C125.28 0.0243004 124.366 0.417626 123.687 1.09835C123.009 1.77908 122.618 2.69491 122.597 3.65583Z" fill="#3F3D56"/>
+            <path d="M384.542 126.795L402.517 149.459C404.805 152.342 409.708 149.221 408.613 145.91C406.372 139.141 414.106 135.369 419.445 134.254C426.527 132.775 433.634 133.015 440.355 129.97C444.624 128.036 440.921 121.749 436.671 123.672C428.81 127.232 419.642 125.601 411.681 129.064C404.565 132.161 398.94 139.881 401.576 147.848L407.672 144.299L389.697 121.635C389.01 120.958 388.084 120.578 387.119 120.578C386.154 120.578 385.228 120.958 384.541 121.635C383.877 122.33 383.506 123.253 383.506 124.214C383.506 125.175 383.877 126.099 384.541 126.793L384.542 126.795Z" fill="#3F3D56"/>
+            <path d="M85.8791 532.182V569.999H201.389C201.388 559.969 197.404 550.351 190.312 543.259C183.22 536.167 173.601 532.182 163.572 532.182C152.741 528.805 140.218 527.73 126.633 528.084C113.816 528.412 100.054 530.018 85.8791 532.182Z" fill="#FF6584"/>
+            <path d="M92.9722 499.818L78.4129 482.17C78.0774 481.47 77.5367 480.889 76.8628 480.504C76.1889 480.118 75.4137 479.948 74.6403 480.014C73.8669 480.08 73.1321 480.38 72.5335 480.875C71.9349 481.369 71.501 482.033 71.2895 482.78L65.548 503.051L92.9722 499.818Z" fill="#3F3D56"/>
+            <path d="M110.631 508.807L105.13 486.599C105.13 485.823 104.894 485.065 104.453 484.426C104.011 483.788 103.386 483.298 102.66 483.024C101.934 482.749 101.142 482.703 100.388 482.889C99.635 483.076 98.9564 483.488 98.4428 484.07L84.5034 499.868L110.631 508.807Z" fill="#FF6584"/>
+            <path d="M104.442 563.124H50.1248C49.213 563.124 48.3386 563.487 47.6938 564.131C47.0491 564.776 46.6869 565.65 46.6869 566.562C46.6869 567.474 47.0491 568.348 47.6938 568.993C48.3386 569.638 49.213 570 50.1248 570H104.442V563.124Z" fill="#FF6584"/>
+            <path d="M85.8788 570C65.3733 570 48.7503 553.377 48.7503 532.871C48.7503 512.366 65.3733 495.743 85.8788 495.743C106.384 495.743 123.007 512.366 123.007 532.871C123.007 553.377 106.384 570 85.8788 570Z" fill="#FF6584"/>
+            <path d="M50.1251 545.247C47.8467 545.247 45.9997 540.938 45.9997 535.622C45.9997 530.305 47.8467 525.996 50.1251 525.996C52.4035 525.996 54.2505 530.305 54.2505 535.622C54.2505 540.938 52.4035 545.247 50.1251 545.247Z" fill="#3F3D56"/>
+            <path d="M60.0941 528.058C59.5245 528.058 59.0628 526.981 59.0628 525.652C59.0628 524.323 59.5245 523.245 60.0941 523.245C60.6637 523.245 61.1255 524.323 61.1255 525.652C61.1255 526.981 60.6637 528.058 60.0941 528.058Z" fill="#3F3D56"/>
+            <path d="M52.5312 523.245C51.9616 523.245 51.4998 522.168 51.4998 520.839C51.4998 519.51 51.9616 518.432 52.5312 518.432C53.1008 518.432 53.5625 519.51 53.5625 520.839C53.5625 522.168 53.1008 523.245 52.5312 523.245Z" fill="#3F3D56"/>
+        </svg>
+        </div>
+
+        <div class="header-container">
+            <div class="week-title">
+                <h1>Junho de 2025</h1>
+            </div>
+            <div class="semanas">
+            <div class="week-calendar">
+                <div class="day-circle">
+                    <span class="day-letter">1</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">2</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">3</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">4</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">5</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">6</span>
+                </div>
+                <div class="day-circle"  style="background-color: rgba(253, 53, 53, 0.87);">
+                    <span class="day-letter">7</span>
+                </div>
+            </div>
+            <div class="week-calendar">
+                <div class="day-circle" style="background-color: #52F578;">
+                    <span class="day-letter">8</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">9</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">10</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">11</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">12</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">13</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">14</span>
+                </div>
+            </div>
+            <div class="week-calendar">
+                <div class="day-circle">
+                    <span class="day-letter">15</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">16</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">17</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">18</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">19</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">20</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">21</span>
+                </div>
+            </div>
+            <div class="week-calendar">
+                <div class="day-circle">
+                    <span class="day-letter">22</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">23</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">24</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">25</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">26</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">27</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">28</span>
+                </div>
+            </div>
+            <div class="week-calendar">
+                <div class="day-circle">
+                    <span class="day-letter">29</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">30</span>
+                </div>
+                <div class="day-circle">
+                    <span class="day-letter">31</span>
+                </div>
+                <div class="day-circle" style="opacity: 0.5;">
+                    <span class="day-letter"></span>
+                </div>
+                <div class="day-circle" style="opacity: 0.5;">
+                    <span class="day-letter"></span>
+                </div>
+                <div class="day-circle" style="opacity: 0.5;">
+                    <span class="day-letter"></span>
+                </div>
+                <div class="day-circle" style="opacity: 0.5;">
+                    <span class="day-letter"></span>
+                </div>
+            </div>
+            </div>
+
+        </div>
+
+        <div class="streak-container">
+            <h1>1 dia de vida</h1>
+        </div>
+    </main>
+    <script>
+        // Controle de navegação do menu
+        const menuItems = document.querySelectorAll('.menu-item');
+        
+        menuItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                const href = this.getAttribute('href') || '';
+                if (href === '#' || href.trim() === '') {
+                    e.preventDefault();
+                }
+                
+                // Remove active de todos
+                menuItems.forEach(i => {
+                    i.classList.remove('active');
+                });
+                
+                // Adiciona active no clicado
+                this.classList.add('active');
+            });
+        });
+
+        window.addEventListener("load", () => {
+            const semanas = document.querySelector(".semanas");
+            const titulo = document.querySelector(".header-container h1");
+            titulo.style.width = semanas.offsetWidth + "px";
+        });
+
+    </script>
+</body>
+</html>

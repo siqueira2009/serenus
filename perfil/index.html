@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - André Coelho Matos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="shortcut icon" href="../imgs/Logo.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            background: #f9f9fb;
+            color: #111;
+            overflow-x: hidden;
+        }
+
+        main {
+            margin-left: 100px;
+            padding: 40px 50px;
+            width: calc(100% - 100px);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100px;
+            height: 100vh;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 30px;
+            border-right: 1px solid #eee;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        .menu-item {
+            width: 100%;
+            padding: 15px 0;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #111;
+            transition: 0.25s ease;
+        }
+
+        .menu-item:hover {
+            background: #f3f3f3;
+        }
+
+        .menu-item i {
+            font-size: 28px;
+            opacity: .35;
+            transition: 0.3s;
+        }
+
+        .menu-item.active i {
+            opacity: 1;
+        }
+
+        .menu-item span {
+            font-size: 12px;
+            opacity: .8;
+            font-weight: 400;
+        }
+
+        /* PROFILE CONTENT */
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .profile-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #000000;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .profile-name {
+            font-size: 36px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .profile-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .entry-date {
+            color: #000000;
+            font-weight: 500;
+        }
+
+        .privacy-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #000000;
+            font-weight: 600;
+        }
+
+        .privacy-badge i {
+            font-size: 18px;
+        }
+
+        .profile-stats {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stat-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #8A38F5;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            border: 1px solid #000000;
+        }
+
+        .stat-badge i {
+            font-size: 18px;
+        }
+
+        .icon-circle {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: 2px solid #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .icon-circle:hover {
+            background-color: #f5f5f5;
+            transform: scale(1.05);
+        }
+
+        .icon-circle i {
+            font-size: 24px;
+            color: #000000;
+        }
+
+        .icon-circle.add {
+            border-style: dashed;
+        }
+
+        .icon-circle.add i {
+            font-size: 28px;
+        }
+
+        /* CONQUISTAS */
+        .conquistas-section {
+            margin-top: 40px;
+            width: 100%;
+        }
+
+        .conquistas-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 25px;
+        }
+
+        .conquistas-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            position: relative;
+        }
+
+        .conquistas-scroll {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            overflow-x: scroll;
+            flex: 1;
+            scrollbar-width: none;
+            padding: 10px 0;
+        }
+
+        .conquistas-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .conquistas-arrow-left {
+            font-size: 48px;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .conquistas-arrow-left:hover {
+            transform: translateX(-5px);
+        }
+
+        /* ESTATÍSTICAS */
+        .estatisticas-section {
+            margin-top: 50px;
+        }
+
+        .estatisticas-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 25px;
+        }
+
+        .estatisticas-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            position: relative;
+        }
+
+        .estatisticas-scroll {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            overflow-x: scroll;
+            flex: 1;
+            scrollbar-width: none;
+            padding: 10px 0;
+            scroll-snap-type: x mandatory;
+        }
+
+        .estatisticas-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .stat-card {
+            min-width: 600px;
+            max-width: 600px;
+            height: 450px;
+            background: #ffffff;
+            border: 1px solid #000000;
+            border-radius: 20px;
+            padding: 35px;
+            scroll-snap-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-card-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 25px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .chart-container {
+            display: flex;
+            gap: 25px;
+            align-items: flex-end;
+            justify-content: center;
+            height: 220px;
+            margin-bottom: 25px;
+            flex-shrink: 0;
+        }
+
+        .bar {
+            width: 45px;
+            background: #D9D9D9;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .bar:hover {
+            opacity: 0.8;
+        }
+
+        .legend-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            flex: 1;
+            align-content: flex-start;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: #000000;
+            white-space: nowrap;
+        }
+
+        .stat-arrow-left {
+            font-size: 48px;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .stat-arrow-left:hover {
+            transform: translateX(-5px);
+        }
+
+        .stat-arrow-right {
+            font-size: 48px;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .stat-arrow-right:hover {
+            transform: translateX(5px);
+        }
+
+        .conquista-circle {
+            width: 140px;
+            height: 140px;
+            min-width: 140px;
+            min-height: 140px;
+            border-radius: 50%;
+            border: 1px solid #000000;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .conquista-circle:hover {
+            transform: scale(1.05);
+        }
+
+        .conquista-circle.locked {
+            background-color: #f5f5f5;
+        }
+
+        .conquista-circle i {
+            font-size: 60px;
+            color: #8A38F5;
+        }
+
+        .conquistas-arrow {
+            font-size: 48px;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .conquistas-arrow:hover {
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="sidebar" id="sidebar">
+        <a href="../menu/index.html" class="menu-item" data-page="menu">
+            <i class="fa-solid fa-house"></i>
+            <span>Menu</span>
+        </a>
+        <a href="../cultivo/index.html" class="menu-item" data-page="cultivo">
+            <i class="fa-solid fa-tree"></i>
+            <span>Cultivo</span>
+        </a>
+        <a href="../chat/index.html" class="menu-item" data-page="chats">
+            <i class="fa-solid fa-comment"></i>
+            <span>Chats</span>
+        </a>
+        <a href="index.html" class="menu-item active" data-page="perfil">
+            <i class="fa-solid fa-user"></i>
+            <span>Perfil</span>
+        </a>
+        <a href="../configuracoes/index.html" class="menu-item" data-page="config">
+            <i class="fa-solid fa-gear"></i>
+            <span>Confi...</span>
+        </a>
+    </nav>
+
+    <main>
+        <div class="profile-container">
+            <img src="../imgs/André Matos GOAT.webp" alt="André Coelho Matos" class="profile-image">
+            
+            <div class="profile-info">
+                <div class="profile-header">
+                    <h1 class="profile-name">André Coelho Matos</h1>
+                </div>
+                
+                <div class="profile-meta">
+                    <span class="entry-date">Entrou em 15/09/2025</span>
+                    <div class="privacy-badge">
+                        <i class="fa-solid fa-eye"></i>
+                        <span>PRIVADO</span>
+                    </div>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="stat-badge">
+                        <i class="fa-solid fa-tree"></i>
+                        <span>1 dia</span>
+                    </div>
+                    
+                    <div class="icon-circle">
+                        <i class="fa-solid fa-wine-bottle"></i>
+                    </div>
+                    
+                    <div class="icon-circle">
+                        <i class="fa-solid fa-mobile-button"></i>
+                    </div>
+                    
+                    <div class="icon-circle">
+                        <i class="fa-solid fa-person-running"></i>
+                    </div>
+                    
+                    <div class="icon-circle add">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONQUISTAS SECTION -->
+        <div class="conquistas-section">
+            <h2 class="conquistas-title">Conquistas</h2>
+            <div class="conquistas-container">
+                <i class="fa-solid fa-chevron-left conquistas-arrow-left" id="conquistasArrowLeft"></i>
+                <div class="conquistas-scroll" id="conquistasScroll">
+                    <div class="conquista-circle">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div class="conquista-circle locked"></div>
+                    <div class="conquista-circle locked"></div>
+                    <div class="conquista-circle locked"></div>
+                    <div class="conquista-circle locked"></div>
+                    <div class="conquista-circle locked"></div>
+                    <div class="conquista-circle locked"></div>
+                    <div class="conquista-circle locked"></div>
+                    <div class="conquista-circle locked"></div>
+                    <div class="conquista-circle locked"></div>
+                    <div class="conquista-circle locked"></div>
+                    <div class="conquista-circle locked"></div>
+                    <div class="conquista-circle locked"></div>
+                    <div class="conquista-circle locked"></div>
+                    <div class="conquista-circle locked"></div>
+                </div>
+                <i class="fa-solid fa-chevron-right conquistas-arrow" id="conquistasArrow"></i>
+            </div>
+        </div>
+
+        <!-- ESTATÍSTICAS SECTION -->
+        <div class="estatisticas-section">
+            <h2 class="estatisticas-title">Estatísticas</h2>
+            <div class="estatisticas-container">
+                <i class="fa-solid fa-chevron-left stat-arrow-left" id="statArrowLeft"></i>
+                <div class="estatisticas-scroll" id="estatisticasScroll">
+                    <!-- Card 1: Principais Gatilhos -->
+                    <div class="stat-card">
+                        <h3 class="stat-card-title">Principais Gatilhos</h3>
+                        <div class="chart-container">
+                            <div class="bar" style="height: 120px; background: #52F578;"></div>
+                            <div class="bar" style="height: 180px; background: #FD3535;"></div>
+                            <div class="bar" style="height: 150px; background: #3B82F6;"></div>
+                            <div class="bar" style="height: 100px; background: #EC4899;"></div>
+                            <div class="bar" style="height: 160px; background: #FACC15;"></div>
+                            <div class="bar" style="height: 140px; background: #06B6D4;"></div>
+                        </div>
+                        <div class="legend-container">
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #52F578;"></div>
+                                <span class="legend-text">Amigos</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #FD3535;"></div>
+                                <span class="legend-text">Solidão</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #3B82F6;"></div>
+                                <span class="legend-text">Estresse</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #EC4899;"></div>
+                                <span class="legend-text">Tédio</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #FACC15;"></div>
+                                <span class="legend-text">Ansiedade</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #06B6D4;"></div>
+                                <span class="legend-text">Local</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Progresso Semanal -->
+                    <div class="stat-card">
+                        <h3 class="stat-card-title">Progresso Semanal</h3>
+                        <div class="chart-container">
+                            <div class="bar" style="height: 110px; background: #52F578;"></div>
+                            <div class="bar" style="height: 150px; background: #FD3535;"></div>
+                            <div class="bar" style="height: 180px; background: #3B82F6;"></div>
+                            <div class="bar" style="height: 140px; background: #EC4899;"></div>
+                            <div class="bar" style="height: 170px; background: #FACC15;"></div>
+                            <div class="bar" style="height: 120px; background: #06B6D4;"></div>
+                            <div class="bar" style="height: 190px; background: #8A38F5;"></div>
+                        </div>
+                        <div class="legend-container">
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #52F578;"></div>
+                                <span class="legend-text">Seg</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #FD3535;"></div>
+                                <span class="legend-text">Ter</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #3B82F6;"></div>
+                                <span class="legend-text">Qua</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #EC4899;"></div>
+                                <span class="legend-text">Qui</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #FACC15;"></div>
+                                <span class="legend-text">Sex</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #06B6D4;"></div>
+                                <span class="legend-text">Sáb</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #8A38F5;"></div>
+                                <span class="legend-text">Dom</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Tempo Médio -->
+                    <div class="stat-card">
+                        <h3 class="stat-card-title">Tempo Médio</h3>
+                        <div class="chart-container">
+                            <div class="bar" style="height: 160px; background: #10B981;"></div>
+                            <div class="bar" style="height: 140px; background: #F59E0B;"></div>
+                            <div class="bar" style="height: 190px; background: #6366F1;"></div>
+                            <div class="bar" style="height: 130px; background: #8B5CF6;"></div>
+                        </div>
+                        <div class="legend-container">
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #10B981;"></div>
+                                <span class="legend-text">Manhã</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #F59E0B;"></div>
+                                <span class="legend-text">Tarde</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #6366F1;"></div>
+                                <span class="legend-text">Noite</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot" style="background: #8B5CF6;"></div>
+                                <span class="legend-text">Madrugada</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right stat-arrow-right" id="statArrowRight"></i>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Funcionalidade das setas de conquistas
+        const conquistasArrowRight = document.getElementById('conquistasArrow');
+        const conquistasArrowLeft = document.getElementById('conquistasArrowLeft');
+        const conquistasScroll = document.getElementById('conquistasScroll');
+
+        conquistasArrowRight.addEventListener('click', () => {
+            conquistasScroll.scrollBy({
+                left: 300,
+                behavior: 'smooth'
+            });
+        });
+
+        conquistasArrowLeft.addEventListener('click', () => {
+            conquistasScroll.scrollBy({
+                left: -300,
+                behavior: 'smooth'
+            });
+        });
+
+        // Funcionalidade das setas de estatísticas
+        const statArrowRight = document.getElementById('statArrowRight');
+        const statArrowLeft = document.getElementById('statArrowLeft');
+        const estatisticasScroll = document.getElementById('estatisticasScroll');
+
+        statArrowRight.addEventListener('click', () => {
+            const cardWidth = 600 + 40; // largura fixa do card + gap
+            estatisticasScroll.scrollBy({
+                left: cardWidth,
+                behavior: 'smooth'
+            });
+        });
+
+        statArrowLeft.addEventListener('click', () => {
+            const cardWidth = 600 + 40; // largura fixa do card + gap
+            estatisticasScroll.scrollBy({
+                left: -cardWidth,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar conta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap rel="stylesheet">
+    <link rel="shortcut icon" href="../imgs/Logo.svg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="criar.css">
+</head>
+<body>
+    <header>
+        <div class=".">
+            <img src="../imgs/Logo.svg" alt="">
+        </div>
+    </header>
+
+    <div class="card">
+        <h1>Criar conta</h1>
+        
+        <form>
+            <div class="form-group">
+                <input type="text" placeholder="Seu nome" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="email" placeholder="Email" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" placeholder="Senha" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="date" placeholder="Data de nascimento" required>
+            </div>
+
+            <div class="login-link">
+                <a href="entrar.html">Já tem conta?</a>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">
+                    Eu concordo com os <a href="#">termos e condições</a>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-check"></i>
+                Criar
+            </button>
+        </form>
+    </div>
+
+    <script>
+        let btn = document.querySelector('button');
+
+        btn.addEventListener('click', () => {
+            window.location.href = "../criar/index.html"
+        })
+    </script>
+</body>
+</html>
